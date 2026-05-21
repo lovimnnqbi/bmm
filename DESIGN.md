@@ -462,6 +462,18 @@ bg-white/[0.58]
 border-white/[0.08]
 ```
 
+### Tailwind v4 渐变
+
+禁止新增 `bg-gradient-*`，统一使用 `bg-linear-*`（v4 同时新增 `bg-radial-*`、`bg-conic-*`）。
+
+```tsx
+bg-linear-to-r from-cyan-500 to-blue-500           // 线性，8 方向关键字
+bg-linear-65 from-purple-500 to-pink-500           // 自定义角度
+bg-linear-to-r/oklch from-indigo-500 to-teal-400   // 颜色插值，默认 oklab
+bg-radial-[at_25%_25%] from-white to-zinc-900      // 径向，自定义圆心
+bg-linear-[25deg,red_5%,yellow_60%,teal]           // 完全自定义
+```
+
 ### CSS 文件引用
 
 如果在独立 CSS 文件中使用 Tailwind 或 HeroUI v2 原子类，需要在文件顶部引用全局样式：

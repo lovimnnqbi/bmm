@@ -8,8 +8,11 @@ export function AppBackground() {
       className={cn('max-xs:hidden max-xs:dark:block fixed inset-0 -z-10 overflow-hidden')}
     >
       <div className={cn('absolute inset-0', Background.CLASS)} />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.14),transparent_26%),radial-gradient(circle_at_18%_72%,rgba(16,185,129,0.11),transparent_32%),radial-gradient(circle_at_78%_18%,rgba(59,130,246,0.09),transparent_24%),radial-gradient(circle_at_86%_86%,rgba(245,158,11,0.11),transparent_26%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.12),transparent_24%),radial-gradient(circle_at_22%_72%,rgba(16,185,129,0.08),transparent_30%),radial-gradient(circle_at_76%_20%,rgba(59,130,246,0.06),transparent_22%),radial-gradient(circle_at_88%_84%,rgba(245,158,11,0.08),transparent_24%)]" />
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.5),rgba(255,255,255,0.14)_18%,transparent_32%)] dark:bg-[linear-gradient(180deg,rgba(255,255,255,0.035),transparent_20%)]" />
+      <div className="absolute top-0 left-0 size-[45vmin] -translate-x-1/3 -translate-y-1/3 rounded-full bg-sky-400/14 blur-3xl dark:bg-cyan-400/12" />
+      <div className="absolute top-[72%] left-[18%] size-[42vmin] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-500/11 blur-3xl dark:bg-emerald-500/8" />
+      <div className="absolute top-[18%] left-[78%] size-[40vmin] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500/9 blur-3xl dark:bg-blue-500/6" />
+      <div className="absolute top-[84%] left-[88%] size-[42vmin] -translate-x-1/2 -translate-y-1/2 rounded-full bg-amber-500/11 blur-3xl dark:bg-violet-500/13" />
+      <div className="absolute inset-x-0 top-0 h-1/3 bg-linear-to-b from-white/50 to-transparent dark:from-white/4" />
     </div>
   )
 }

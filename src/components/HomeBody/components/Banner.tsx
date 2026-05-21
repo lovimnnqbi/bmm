@@ -2,7 +2,7 @@ import { usePageUtil } from '@/hooks'
 import { useOnClickTag } from '@/hooks/useOnClickTag'
 import { getTagLinkAttrs } from '@/utils'
 import { PageRoutes, WEBSITE_NAME } from '@cfg'
-import { Chip } from '@heroui/react'
+import { Chip, Kbd } from '@heroui/react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { PropsWithChildren, ReactNode } from 'react'
 
@@ -16,7 +16,7 @@ const SURFACE_CLS =
 const SURFACE_HIGHLIGHT_CLS =
   'absolute inset-0 bg-[linear-gradient(135deg,white/14,transparent_34%,slate-400/8)] dark:hidden'
 const INNER_PANEL_CLS =
-  'rounded-[22px] border border-slate-200/75 bg-white/34 px-3.5 py-3.5 backdrop-blur-sm dark:border-white/10 dark:bg-content2/50 sm:px-4.5'
+  'rounded-[22px] border border-slate-200/75 px-3.5 py-3.5 backdrop-blur-sm dark:border-white/10 sm:px-4.5'
 
 interface Props {
   tags: SelectTag[]
@@ -106,7 +106,12 @@ export default function Banner(props: Props) {
 
   if (pathname.startsWith(routes.tags()) && selectedTags.length) {
     const isIntersected = selectedTags.length > 1
-    const firstTag = selectedTags[0]
+    const selectedTagIds = new Set(selectedTags.map((t) => t.id))
+    const relatedTagIds = [
+      ...new Set(selectedTags.flatMap((t) => t.relatedTagIds).filter((id) => !selectedTagIds.has(id))),
+    ]
+    const relatedTags = relatedTagIds.map((id) => tags.find((t) => t.id === id)).filter(Boolean) as SelectTag[]
+
     return renderWideCard(
       <div className="grid gap-4 xl:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.9fr)] xl:items-start">
         <div>
@@ -114,7 +119,7 @@ export default function Banner(props: Props) {
             Tag View
           </div>
           <h1 className="mt-2 text-3xl font-semibold tracking-tight sm:text-[2rem]">
-            {isIntersected ? '标签交叉筛选' : firstTag.name}
+            {isIntersected ? '标签交叉筛选' : selectedTags[0].name}
           </h1>
           <p className="text-default-500 mt-3 text-sm leading-6">
             {isIntersected
@@ -127,16 +132,12 @@ export default function Banner(props: Props) {
                 key={tag.id}
                 variant="flat"
                 className="text-foreground-500 hover:text-foreground-800 cursor-pointer bg-white/60 dark:bg-content2/60"
-                onClose={
-                  isIntersected
-                    ? () => {
-                        const tagNames = selectedTags
-                          .map((t) => (t.name === tag.name ? null : t.name))
-                          .filter(Boolean) as SelectTag['name'][]
-                        router.push(routes.tags(tagNames))
-                      }
-                    : undefined
-                }
+                onClose={() => {
+                  const tagNames = selectedTags
+                    .map((t) => (t.name === tag.name ? null : t.name))
+                    .filter(Boolean) as SelectTag['name'][]
+                  router.push(routes.tags(tagNames))
+                }}
               >
                 {tag.name}
               </Chip>
@@ -156,19 +157,14 @@ export default function Banner(props: Props) {
           </div>
           <div className={INNER_PANEL_CLS}>
             <div className="text-default-500 text-[0.68rem] font-medium tracking-[0.24em] uppercase">
-              {isIntersected ? '操作提示' : '关联标签'}
+              关联标签
             </div>
-            {isIntersected ? (
-              <div className="text-default-500 mt-2 text-sm leading-6">
-                关闭任意标签即可放宽筛选范围，继续探索更广结果。
-              </div>
-            ) : firstTag.relatedTagIds.length ? (
-              <div className="mt-3 flex flex-wrap gap-2">
-                {firstTag.relatedTagIds.map((id) => {
-                  const tag = tags.find((tag) => tag.id === id)!
-                  return (
+            {relatedTags.length ? (
+              <>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {relatedTags.map((tag) => (
                     <Chip
-                      key={id}
+                      key={tag.id}
                       variant="flat"
                       className="text-foreground-500 hover:text-foreground-800 cursor-pointer bg-white/60 active:opacity-50 dark:bg-content2/60"
                       as="a"
@@ -177,9 +173,12 @@ export default function Banner(props: Props) {
                     >
                       {tag.name}
                     </Chip>
-                  )
-                })}
-              </div>
+                  ))}
+                </div>
+                <div className="text-default-400 mt-3 text-[11px] leading-4.5">
+                  按住 <Kbd className="scale-75 opacity-75" keys={['alt']} /> 点击标签可交叉筛选书签
+                </div>
+              </>
             ) : (
               <div className="text-default-500 mt-2 text-sm leading-6">
                 当前标签暂时没有关联标签。

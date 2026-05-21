@@ -252,7 +252,7 @@ export default function ClientPage(props: ClientPageProps) {
       <p className="text-default-500 text-sm leading-6">{STATUS_TIPS[activeStatus]}</p>
 
       {filteredItems.length ? (
-        <div className="grid gap-3">
+        <div className="grid gap-4">
           {filteredItems.map((item) => (
             <ReadLaterCard
               key={item.id}
@@ -300,7 +300,7 @@ function ReadLaterCard(props: {
   return (
     <Card
       shadow="none"
-      className="group/read-later-card border border-white/58 bg-white/38 shadow-[0_18px_50px_-36px_rgba(15,23,42,0.45)] backdrop-blur-2xl transition hover:border-white/72 hover:bg-white/48 hover:shadow-[0_22px_58px_-38px_rgba(15,23,42,0.5)] dark:border-white/10 dark:bg-white/[0.055] dark:shadow-[0_18px_50px_-36px_rgba(0,0,0,0.6)] dark:hover:border-white/16 dark:hover:bg-white/[0.075]"
+      className="group/read-later-card border border-divider/60 bg-white/38 backdrop-blur-2xl transition hover:bg-white/48 dark:bg-white/[0.055] dark:hover:bg-white/[0.075]"
     >
       <CardBody className="p-4 sm:p-5">
         <div className="flex min-w-0 gap-3.5">
